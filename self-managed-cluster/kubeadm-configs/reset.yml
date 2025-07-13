@@ -1,0 +1,9 @@
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ResetConfiguration
+cleanupTmpDir: true
+certificatesDir: /etc/kubernetes/pki
+criSocket: unix:///var/run/containerd/containerd.sock
+dryRun: false
+force: false
+ignorePreflightErrors: []
+skipPhases: []

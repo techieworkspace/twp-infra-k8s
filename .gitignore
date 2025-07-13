@@ -1,0 +1,9 @@
+# Ignores files following a specific pattern.
+**/.vagrant
+**/.DS_Store
+**/*.tar.gz
+**/*.tgz
+**/*.log
+**/*.env
+**/*.pem
+**/*.tmp

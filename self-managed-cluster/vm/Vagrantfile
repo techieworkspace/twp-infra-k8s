@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  # Configurations for both control plane and worker node.
+  config.vm.box = "fedora/39-cloud-base"
+  config.vm.box_version = "39.20231031.1"
+  config.vm.provider "virtualbox" do |vb|
+    vb.cpus = 2
+    vb.memory = "2048"
+    vb.check_guest_additions = false
+  end
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # Configurations for Kubernetes Control Plane node
+  config.vm.define "twp-k8s-cpn-01" do |twp_k8s_cpn_01|
+    twp_k8s_cpn_01.vm.hostname = "cpn-01.k8s.compute.internal"
+    twp_k8s_cpn_01.vm.network "private_network", ip: "10.1.1.5"
+    twp_k8s_cpn_01.vm.provider "virtualbox" do |vb|
+      vb.name = "cpn-01.k8s.compute.internal"
+    end
+    twp_k8s_cpn_01.vm.provision "configure-server", type: "shell", path: "cpn.sh"
+    twp_k8s_cpn_01.vm.provision "install-k8s", type: "shell", path: "setup.sh"
+    twp_k8s_cpn_01.vm.provision "download-configs", type: "file", source: "../kubeadm-configs", destination: "/opt/k8s/configs/kubeadm"
+  end
+
+  # Configurations For Kubernetes worker node
+  config.vm.define "twp-k8s-wn-01" do |twp_k8s_wn_01|
+    twp_k8s_wn_01.vm.hostname = "wn-01.k8s.compute.internal"
+    twp_k8s_wn_01.vm.network "private_network", ip: "10.1.2.5"
+    twp_k8s_wn_01.vm.provider "virtualbox" do |vb|
+      vb.name = "wn-01.k8s.compute.internal"
+    end
+    twp_k8s_wn_01.vm.provision "configure-server", type: "shell", path: "wn.sh"
+    twp_k8s_wn_01.vm.provision "install-k8s", type: "shell", path: "setup.sh"
+    twp_k8s_wn_01.vm.provision "download-configs", type: "file", source: "../kubeadm-configs", destination: "/opt/k8s/configs/kubeadm"
+  end
+
+end
