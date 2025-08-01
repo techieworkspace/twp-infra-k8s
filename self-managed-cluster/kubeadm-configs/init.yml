@@ -1,27 +1,27 @@
 apiVersion: kubeadm.k8s.io/v1beta4
 kind: InitConfiguration
 localAPIEndpoint:
-  advertiseAddress: "10.1.1.5"
+  advertiseAddress: "<CONTROL_PLANE_NODE_IP>"
   bindPort: 6443
 nodeRegistration:
   kubeletExtraArgs:
     - name: node-ip
-      value: "10.1.1.5"
+      value: "<CONTROL_PLANE_NODE_IP>"
   criSocket: "unix:///var/run/containerd/containerd.sock"
   imagePullPolicy: "IfNotPresent"
   imagePullSerial: true
 ---
 apiVersion: kubeadm.k8s.io/v1beta4
 kind: ClusterConfiguration
-clusterName: goodworks
+clusterName: techieworkspace
 kubernetesVersion: "v1.31.1"
 imageRepository: registry.k8s.io
-controlPlaneEndpoint: "10.1.1.5:6443"
+controlPlaneEndpoint: "<CONTROL_PLANE_NODE_IP>:6443"
 caCertificateValidityPeriod: 87600h0m0s
 certificateValidityPeriod: 8760h0m0s
 certificatesDir: /etc/kubernetes/pki
 networking:
-  dnsDomain: "cluster.local"
+  dnsDomain: "techieworkspace.internal"
   podSubnet: "10.244.0.0/16"
   serviceSubnet: "10.96.0.0/12"
 etcd:

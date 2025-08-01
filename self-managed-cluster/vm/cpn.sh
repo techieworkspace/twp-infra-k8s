@@ -20,7 +20,7 @@ autoconnect=true
 [ethernet]
 
 [ipv4]
-address1=10.1.1.5/24
+address1=$NODE_IP
 method=manual
 
 [ipv6]

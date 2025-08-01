@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
     twp_k8s_cpn_01.vm.provider "virtualbox" do |vb|
       vb.name = "cpn-01.k8s.compute.internal"
     end
-    twp_k8s_cpn_01.vm.provision "configure-server", type: "shell", path: "cpn.sh"
+    twp_k8s_cpn_01.vm.provision "configure-server", type: "shell", path: "cpn.sh", env: {"NODE_IP" => "10.1.1.5/24" }
     twp_k8s_cpn_01.vm.provision "install-k8s", type: "shell", path: "setup.sh"
     twp_k8s_cpn_01.vm.provision "download-configs", type: "file", source: "../kubeadm-configs", destination: "/opt/k8s/configs/kubeadm"
   end
@@ -32,9 +32,20 @@ Vagrant.configure("2") do |config|
     twp_k8s_wn_01.vm.provider "virtualbox" do |vb|
       vb.name = "wn-01.k8s.compute.internal"
     end
-    twp_k8s_wn_01.vm.provision "configure-server", type: "shell", path: "wn.sh"
+    twp_k8s_wn_01.vm.provision "configure-server", type: "shell", path: "wn.sh", env: {"NODE_IP" => "10.1.2.5/24" }
     twp_k8s_wn_01.vm.provision "install-k8s", type: "shell", path: "setup.sh"
     twp_k8s_wn_01.vm.provision "download-configs", type: "file", source: "../kubeadm-configs", destination: "/opt/k8s/configs/kubeadm"
+  end
+
+  config.vm.define "twp-k8s-wn-02" do |twp_k8s_wn_02|
+    twp_k8s_wn_02.vm.hostname = "wn-02.k8s.compute.internal"
+    twp_k8s_wn_02.vm.network "private_network", ip: "10.1.2.6"
+    twp_k8s_wn_02.vm.provider "virtualbox" do |vb|
+      vb.name = "wn-02.k8s.compute.internal"
+    end
+    twp_k8s_wn_02.vm.provision "configure-server", type: "shell", path: "wn.sh", env: {"NODE_IP" => "10.1.2.6/24" }
+    twp_k8s_wn_02.vm.provision "install-k8s", type: "shell", path: "setup.sh"
+    twp_k8s_wn_02.vm.provision "download-configs", type: "file", source: "../kubeadm-configs", destination: "/opt/k8s/configs/kubeadm"
   end
 
 end

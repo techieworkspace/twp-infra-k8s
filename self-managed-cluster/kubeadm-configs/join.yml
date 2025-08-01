@@ -4,16 +4,22 @@ dryRun: false
 nodeRegistration:
   kubeletExtraArgs:
     - name: node-ip
-      value: "10.1.2.5"
+      value: "<NODE_IP>"
   criSocket: "unix:///var/run/containerd/containerd.sock"
   imagePullPolicy: "IfNotPresent"
   imagePullSerial: true
 discovery:
   bootstrapToken:
     apiServerEndpoint: "10.1.1.5:6443"
-    token: "1u30zd.c8n45rsf8ef3buny"
+    token: "<BOOTSTRAP_TOKEN>"
     unsafeSkipCAVerification: true
     caCertHashes:
-      - "sha256:31fae91f0e056afb305c533ac8e0557abb7421fb561241119ec70108936e64a8"
-  tlsBootstrapToken: "1u30zd.c8n45rsf8ef3buny"
+      - "sha256:<CA_CERT_HASH>"
+  tlsBootstrapToken: "<BOOTSTRAP_TOKEN>"
 caCertPath: /etc/kubernetes/pki/ca.crt
+# --- Uncomment this section only for control plane node joining ---
+# controlPlane:
+#   localAPIEndpoint:
+#     advertiseAddress: "<NODE_IP>"
+#     bindPort: 6443
+#   certificateKey: "<CERTIFICATE_KEY>"

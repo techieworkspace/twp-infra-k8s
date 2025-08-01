@@ -20,12 +20,12 @@ autoconnect=true
 [ethernet]
 
 [ipv4]
-address1=10.1.2.5/24
+address1=$NODE_IP
 method=manual
 
 [ipv6]
 addr-gen-mode=default
-method=disabled
+method=auto
 
 NET_CONFIG_EOF
 sudo chmod 600 /etc/NetworkManager/system-connections/eth1.ini

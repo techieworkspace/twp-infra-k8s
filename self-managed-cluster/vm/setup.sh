@@ -15,10 +15,13 @@ sudo dnf install -y ebtables ethtool socat conntrack iptables iproute-tc
 
 # Append local DNS entires for K8s control plane and worker node.
 echo "Appending local DNS entries for K8s control plane and workder node"
-cat <<EOF | sudo tee -a /etc/hosts
-10.1.1.5 cpn-1.k8s.compute.internal
-10.1.2.5 wn-1.k8s.compute.internal
-10.1.2.6 wn-2.k8s.compute.internal
+sudo cat <<EOF >> /etc/hosts
+10.1.1.5 cpn-01.k8s.compute.internal
+10.1.1.6 cpn-02.k8s.compute.internal
+10.1.1.7 cpn-03.k8s.compute.internal
+10.1.2.5 wn-01.k8s.compute.internal
+10.1.2.6 wn-02.k8s.compute.internal
+10.1.2.7 wn-02.k8s.compute.internal
 EOF
 
 # # Forwarding IPv4 and letting iptables see bridged traffic
@@ -31,7 +34,7 @@ EOF
 # sudo modprobe overlay
 # sudo modprobe br_netfilter
 # sysctl params required by setup, params persist across reboots
-cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+sudo cat <<EOF >> /etc/sysctl.d/k8s.conf
 net.ipv4.ip_forward                 = 1
 vm.swappiness                       = 0
 EOF
@@ -78,7 +81,7 @@ echo "Installing command line utility for CRI."
 CRICTL_VERSION="v1.31.0"
 ARCH="amd64"
 curl -L "https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRICTL_VERSION}/crictl-${CRICTL_VERSION}-linux-${ARCH}.tar.gz" | sudo tar -C $DOWNLOAD_DIR -xz
-cat <<EOF | sudo tee /etc/crictl.yaml
+sudo cat <<EOF >> /etc/crictl.yaml
 runtime-endpoint: unix:///var/run/containerd/containerd.sock
 image-endpoint: unix:///var/run/containerd/containerd.sock
 timeout: 10
