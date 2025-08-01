@@ -10,7 +10,7 @@ nodeRegistration:
   imagePullSerial: true
 discovery:
   bootstrapToken:
-    apiServerEndpoint: "10.1.1.5:6443"
+    apiServerEndpoint: "<CONTROL_PLANE_NODE_IP>:6443"
     token: "<BOOTSTRAP_TOKEN>"
     unsafeSkipCAVerification: true
     caCertHashes:
